@@ -1,0 +1,28 @@
+using API.Data;
+using API.Entidades;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace MyApp.Namespace
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class MembersController(AppDbContext context) : ControllerBase
+    {
+        [HttpGet]
+        public async Task <ActionResult<IReadOnlyList<Appuser>>> GetMembers()
+        {
+            var members = await context.Users.ToListAsync();
+            return members;
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Appuser>> GetMember(string id)
+        {
+            var member = await context.Users.FindAsync(id);
+            if (member == null) return NotFound();
+            return member;
+        }
+    }
+}
