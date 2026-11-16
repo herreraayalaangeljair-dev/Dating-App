@@ -1,0 +1,7 @@
+<ul class="max-w-md divide-y divide-gray-700 bg-gray-900 text-gray-200 rounded-xl p-4 shadow-xl border border-gray-800">
+    @for (member of members(); track members().id) {
+    <li> {{ member.userName }} </li>
+    }
+</ul>
+
+<button class="btn btn-primary">Button</button>
