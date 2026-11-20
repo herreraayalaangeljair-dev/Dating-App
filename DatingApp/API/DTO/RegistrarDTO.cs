@@ -1,8 +1,11 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace API.DTO;
 
 public class RegistrarDTO
 {
-    public required string Email { get; set; }
-    public required string Password { get; set; }
-    public required string Nombre { get; set; }
+
+    [Required] [EmailAddress] public string Email { get; set; } = "";
+    [Required] [MinLength(8)]public string Password { get; set; } = "";
+    [Required] public string Nombre { get; set; } = "";
 }

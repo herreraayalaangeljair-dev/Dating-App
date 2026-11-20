@@ -2,6 +2,7 @@ using API.Data;
 using API.DTO;
 using API.Entidades;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MyApp.Namespace;
 using System.Security.Cryptography;
 using System.Text;
@@ -13,6 +14,8 @@ public class AccountController(AppDbContext context): BaseApiController
     [HttpPost("registrar")]
     public async Task<ActionResult<Appuser>> Registrar(RegistrarDTO registrarDTO)
     {
+
+        if (await ExisteEmail(registrarDTO.Email)) return BadRequest("El email ya existe");
         using var hmac = new HMACSHA512();
 
         var user = new Appuser
@@ -26,6 +29,11 @@ public class AccountController(AppDbContext context): BaseApiController
         context.Users.Add(user);
         await context.SaveChangesAsync();
         return user;
+    }
+
+    private async Task<bool> ExisteEmail(string Email)
+    {
+        return await context.Users.AnyAsync(x => x.UserEmail.ToLower() == Email.ToLower());
     }
 }
 
